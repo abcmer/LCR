@@ -13,13 +13,13 @@ const ConfigSchema = new Schema({
     type: Number,
     required: [true, "config.rollTimeout field is required"]
   },
-  minPlayers: {
+  minSeats: {
     type: Number,
-    required: [true, "minPlayers field is required"]  
+    required: [true, "minSeats field is required"]  
   },
-  maxPlayers: {
+  maxSeats: {
     type: Number,
-    required: [true, "maxPlayers field is required"]
+    required: [true, "maxSeats field is required"]
   },
   startTime: {
     type: Date,

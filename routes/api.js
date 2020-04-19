@@ -47,12 +47,12 @@ router.get('/games/:id', (req, res, next) => {
 })
 
 router.post('/games', async (req, res, next) => {
-  const maxPlayers = req.body.config.maxPlayers
+  const maxSeats = req.body.config.maxSeats
   const initialChipCount = req.body.config.initialChipCount
   
   // Create empty seats
   let seats = []
-  for (i=0; i < maxPlayers; i++) {
+  for (i=0; i < maxSeats; i++) {
     seats.push({
       "seatNumber": i,
       "userId": 'abcmer',

@@ -35,7 +35,6 @@ router.delete('/users/:id', (req, res, next) => {
 })
 
 router.get('/games', (req, res, next) => {
-  //this will return all the data, exposing only the id and action field to the client
   Game.find({})
     .then(data => res.json(data))
     .catch(next)
@@ -48,28 +47,17 @@ router.get('/games/:id', (req, res, next) => {
 })
 
 router.post('/games', async (req, res, next) => {
-
   const maxPlayers = req.body.config.maxPlayers
   const initialChipCount = req.body.config.initialChipCount
-
-  console.log(maxPlayers)
-  console.log('req.body', req.body)
-
-
   let seats = []
   for (i=0; i < maxPlayers; i++) {
     seats.push({
-      "seatNumber": i,
+      "seat": i,
       "userId": null,
       "chipCount": initialChipCount,
     })
   }
-
   req.body.seats = seats
-  console.log('seats', seats[0])
-
-
-
   Game.create(req.body)
   .then(data => res.json(data))
   .catch(next)
@@ -98,9 +86,63 @@ router.put('/games/:id', async (req, res, next) => {
     game.set(req.body);
     var result = await game.save();
     res.send(result);
-} catch (error) {
-    res.status(500).send(error);
-}
+  } catch (error) {
+      res.status(500).send(error);
+  }
+})
+
+router.post('/rolls', async (req, res) => {
+  // Parse auth token, gameId, user
+  const {gameId, userId, numberOfRolls} = req.body;
+  // console.log('req.body', req.body)  
+
+  try {    
+    var game = await Game.findById(gameId).exec();
+    // console.log('game', game)
+
+    const seat = game.seats.find(s => s.userId == userId).seat
+    console.log('seat', seat)
+      
+    // Simulate dice rolls
+    let outcome = []
+    for (i=0; i<numberOfRolls; i++) {
+      outcome.push(Math.ceil(Math.random()*6))
+    }
+
+    console.log('outcome', outcome)
+    game.rolls.push({
+      seat,
+      outcome
+    })   
+    
+    console.log('game', game)
+    var result = await game.save();
+    res.send(result);
+  } catch (error) {
+      res.status(500).send(error);
+  }
+
+
+
+
+  // Game.findOne({"_id": gameId})
+  //   .then(data => {
+  //     const seat = data.seats.find(s => s.userId == userId)
+      
+  //     // Simulate dice rolls
+  //     let outcome = []
+  //     for (i=0; i<numberOfRolls; i++) {
+  //       outcome.push(Math.ceil(Math.random()*6))
+  //     }
+
+  //     data.rolls.push({
+  //       seat,
+  //       outcome
+  //     })
+  //   })
+
+
+  // Generate 3 random numbers async
 })
 
 module.exports = router;

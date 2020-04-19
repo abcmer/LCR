@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 mongoose.set('useFindAndModify', false);
 
 const SeatSchema = new Schema({ 
-  seatNumber: Number,
+  seat: Number,
   userId: String,
   chipCount: Number, 
 });
@@ -31,18 +31,21 @@ const ConfigSchema = new Schema({
   }   
 })
 
+const RollSchema = new Schema({
+  seat: Number,
+  outcome: [Number]
+})
 
-//create schema for todo
 const GameSchema = new Schema({
   created: {
     type: Date,
     required: [true, "created field is required"]
   },
   config: ConfigSchema,
-  seats: [SeatSchema]
+  seats: [SeatSchema],
+  rolls: [RollSchema]
 })
 
-//create model for todo
 const Game = mongoose.model('game', GameSchema);
 
 module.exports = Game;

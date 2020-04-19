@@ -55,12 +55,12 @@ router.post('/games', async (req, res, next) => {
   for (i=0; i < maxSeats; i++) {
     seats.push({
       "seatNumber": i,
-      "userId": 'abcmer',
-      "chipCount": initialChipCount,
+      "username": null,
+      "chipCount": 0,
     })
   }
   req.body.seats = seats
-  
+
   // Set centerChipCount
   req.body.centerChipCount = 0
 
@@ -98,10 +98,10 @@ router.put('/games/:id', async (req, res, next) => {
 
 router.post('/rolls', async (req, res) => {
   // Parse auth token, gameId, user
-  const {gameId, userId} = req.body;
+  const {gameId, username} = req.body;
   try {    
     var game = await Game.findById(gameId).exec();
-    const seatNumber = game.seats.find(s => s.userId == userId).seatNumber
+    const seatNumber = game.seats.find(s => s.username == username).seatNumber
     const userChipCount = game.seats[seatNumber].chipCount;
 
     // Determine number of rolls
@@ -149,6 +149,20 @@ router.post('/rolls', async (req, res) => {
     res.send(result);
   } catch (error) {
       res.status(500).send(error);
+  }
+})
+
+router.put('/games/:gameId/seats/:seatIndex', async (req, res) => {
+  const {gameId, seatIndex} = req.params
+  const {username} = req.query;
+  try {
+    var game = await Game.findById(gameId).exec();
+    game.seats[seatIndex].username = username
+    game.seats[seatIndex].chipCount = game.config.initialChipCount
+    var result = await game.save();
+    res.send(result);
+  } catch (error) {
+    res.status(500).send(error)
   }
 })
 

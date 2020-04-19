@@ -4,7 +4,7 @@ mongoose.set('useFindAndModify', false);
 
 const SeatSchema = new Schema({ 
   seatNumber: Number,
-  userId: String,
+  username: String,
   chipCount: Number, 
 });
 

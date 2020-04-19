@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 mongoose.set('useFindAndModify', false);
 
 const SeatSchema = new Schema({ 
-  seat: Number,
+  seatNumber: Number,
   userId: String,
   chipCount: Number, 
 });
@@ -32,7 +32,7 @@ const ConfigSchema = new Schema({
 })
 
 const RollSchema = new Schema({
-  seat: Number,
+  seatNumber: Number,
   outcome: [Number]
 })
 

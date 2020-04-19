@@ -52,8 +52,8 @@ router.post('/games', async (req, res, next) => {
   let seats = []
   for (i=0; i < maxPlayers; i++) {
     seats.push({
-      "seat": i,
-      "userId": null,
+      "seatNumber": i,
+      "userId": 'abcmer',
       "chipCount": initialChipCount,
     })
   }
@@ -82,7 +82,6 @@ router.delete('/games', (req, res, next) => {
 router.put('/games/:id', async (req, res, next) => {
   try {
     var game = await Game.findById(req.params.id).exec();
-    console.log('game', game)
     game.set(req.body);
     var result = await game.save();
     res.send(result);
@@ -94,14 +93,9 @@ router.put('/games/:id', async (req, res, next) => {
 router.post('/rolls', async (req, res) => {
   // Parse auth token, gameId, user
   const {gameId, userId, numberOfRolls} = req.body;
-  // console.log('req.body', req.body)  
-
   try {    
     var game = await Game.findById(gameId).exec();
-    // console.log('game', game)
-
-    const seat = game.seats.find(s => s.userId == userId).seat
-    console.log('seat', seat)
+    const seatNumber = game.seats.find(s => s.userId == userId).seatNumber
       
     // Simulate dice rolls
     let outcome = []
@@ -109,40 +103,59 @@ router.post('/rolls', async (req, res) => {
       outcome.push(Math.ceil(Math.random()*6))
     }
 
-    console.log('outcome', outcome)
     game.rolls.push({
-      seat,
+      seatNumber,
       outcome
-    })   
+    })
     
-    console.log('game', game)
+    outcome.forEach(roll => {
+      switch (roll) {
+        case 1:
+          // LEFT
+          console.log('user rolls LEFT')
+          console.log(game.seats)
+          game.seats[getSeatToLeft(seatNumber, game.seats.length)].chipCount += 1
+          game.seats[seatNumber].chipCount -= 1
+          break;
+        case 2:
+          // RIGHT
+          console.log('user rolls RIGHT')
+          game.seats[(getSeatToRight(seatNumber, game.seats.length))].chipCount += 1
+          game.seats[seatNumber].chipCount -= 1
+          break;
+        case 3:
+          // CENTER
+          console.log('user rolls CENTER')
+          // increase
+          break;
+        default:
+          console.log("user rolls STAY")
+      }
+    })
+    
     var result = await game.save();
     res.send(result);
   } catch (error) {
       res.status(500).send(error);
   }
-
-
-
-
-  // Game.findOne({"_id": gameId})
-  //   .then(data => {
-  //     const seat = data.seats.find(s => s.userId == userId)
-      
-  //     // Simulate dice rolls
-  //     let outcome = []
-  //     for (i=0; i<numberOfRolls; i++) {
-  //       outcome.push(Math.ceil(Math.random()*6))
-  //     }
-
-  //     data.rolls.push({
-  //       seat,
-  //       outcome
-  //     })
-  //   })
-
-
-  // Generate 3 random numbers async
 })
+
+const getSeatToLeft = (seatNumber, numberOfSeats) => {
+  // SeatNumber to the left is seatNumber + 1 because gameplay moves to the left  
+  if (seatNumber == numberOfSeats -1) {
+    return 0
+  } else {
+    return seatNumber + 1
+  }
+}
+
+const getSeatToRight = (seatNumber, numberOfSeats) => {
+  // seatNumber to the right is seatNumber -1 because gameplay moves to the left
+  if (seatNumber == 0) {
+    return numberOfSeats - 1
+  } else {
+    return seatNumber -1
+  }
+}
 
 module.exports = router;

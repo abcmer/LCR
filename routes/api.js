@@ -49,6 +49,8 @@ router.get('/games/:id', (req, res, next) => {
 router.post('/games', async (req, res, next) => {
   const maxPlayers = req.body.config.maxPlayers
   const initialChipCount = req.body.config.initialChipCount
+  
+  // Create empty seats
   let seats = []
   for (i=0; i < maxPlayers; i++) {
     seats.push({
@@ -58,6 +60,10 @@ router.post('/games', async (req, res, next) => {
     })
   }
   req.body.seats = seats
+  
+  // Set centerChipCount
+  req.body.centerChipCount = 0
+
   Game.create(req.body)
   .then(data => res.json(data))
   .catch(next)
@@ -92,11 +98,18 @@ router.put('/games/:id', async (req, res, next) => {
 
 router.post('/rolls', async (req, res) => {
   // Parse auth token, gameId, user
-  const {gameId, userId, numberOfRolls} = req.body;
+  const {gameId, userId} = req.body;
   try {    
     var game = await Game.findById(gameId).exec();
     const seatNumber = game.seats.find(s => s.userId == userId).seatNumber
-      
+    const userChipCount = game.seats[seatNumber].chipCount;
+
+    // Determine number of rolls
+    const numberOfRolls = getNumberOfRolls(userChipCount)
+
+    if (!numberOfRolls) {
+      res.status(400).send({status: 'error', msg: 'User must have at least 1 chip to roll.'});
+    }      
     // Simulate dice rolls
     let outcome = []
     for (i=0; i<numberOfRolls; i++) {
@@ -113,7 +126,6 @@ router.post('/rolls', async (req, res) => {
         case 1:
           // LEFT
           console.log('user rolls LEFT')
-          console.log(game.seats)
           game.seats[getSeatToLeft(seatNumber, game.seats.length)].chipCount += 1
           game.seats[seatNumber].chipCount -= 1
           break;
@@ -126,13 +138,13 @@ router.post('/rolls', async (req, res) => {
         case 3:
           // CENTER
           console.log('user rolls CENTER')
-          // increase
+          game.centerChipCount += 1
+          game.seats[seatNumber].chipCount -= 1
           break;
         default:
           console.log("user rolls STAY")
       }
-    })
-    
+    })    
     var result = await game.save();
     res.send(result);
   } catch (error) {
@@ -155,6 +167,14 @@ const getSeatToRight = (seatNumber, numberOfSeats) => {
     return numberOfSeats - 1
   } else {
     return seatNumber -1
+  }
+}
+
+const getNumberOfRolls = (chipCount) => {
+  if (chipCount >= 3) {
+    return 3
+  } else {
+    return chipCount
   }
 }
 

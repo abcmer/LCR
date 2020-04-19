@@ -41,6 +41,7 @@ const GameSchema = new Schema({
     type: Date,
     required: [true, "created field is required"]
   },
+  centerChipCount: Number,
   config: ConfigSchema,
   seats: [SeatSchema],
   rolls: [RollSchema]

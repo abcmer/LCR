@@ -96,9 +96,10 @@ router.put('/games/:id', async (req, res, next) => {
   }
 })
 
-router.post('/rolls', async (req, res) => {
+router.put('/games/:gameId/rolls', async (req, res) => {
   // Parse auth token, gameId, user
-  const {gameId, username} = req.body;
+  const {gameId} = req.params;
+  const {username} = req.query;
   try {    
     var game = await Game.findById(gameId).exec();
     const seatNumber = game.seats.find(s => s.username == username).seatNumber

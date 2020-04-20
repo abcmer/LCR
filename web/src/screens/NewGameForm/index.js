@@ -1,11 +1,18 @@
 import React, {useState} from 'react';
 import './style.css';
 import axios from 'axios'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 const NewGameForm = () => {
   const [rollTimeout, setRollTimeout] = useState(10)
   const [minSeats, setMinSeats] = useState(2)
   const [maxSeats, setMaxSeats] = useState(10)
+  const [gameId, setGameId] = useState('')
 
   const handleChange = (e) => {
     const value = e.target.value
@@ -39,31 +46,36 @@ const NewGameForm = () => {
     })
     .then(function (response) {
       console.log(response)
-      window.location.href = 'http://localhost:3000/games-list'
+      setGameId(response.data._id)
+      console.log(response.data._id)
+      // window.location.href = 'http://localhost:3000/games-list'
     })
   }
   
 
   return(
     <div>
-      <h1>New Game Form</h1>    
-      <form onSubmit={handleSubmit}>
-        <label>
-          Roll Timeout:
-          <input type="text" defaultValue={rollTimeout} name="rollTimeout" onChange={handleChange} />
-        </label>
-        <label>
-          Min Seats:
-          <input type="text" defaultValue={minSeats} name="minSeats" onChange={handleChange} />
-        </label>
-        <label>
-          Max Seats:
-          <input type="text" defaultValue={maxSeats} name="maxSeats" onChange={handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      {gameId
+        ? <Link key={gameId} to={`/games/${gameId}`}>{`${window.location.origin}/games/${gameId}`}</Link>
+        : <div>     
+            <h1>New Game Form</h1>    
+            <form onSubmit={handleSubmit}>
+              <label>
+                Roll Timeout:
+                <input type="text" defaultValue={rollTimeout} name="rollTimeout" onChange={handleChange} />
+              </label>
+              <label>
+                Min Seats:
+                <input type="text" defaultValue={minSeats} name="minSeats" onChange={handleChange} />
+              </label>
+              <label>
+                Max Seats:
+                <input type="text" defaultValue={maxSeats} name="maxSeats" onChange={handleChange} />
+              </label>
+              <input type="submit" value="Submit" />
+            </form>
+          </div>}
     </div>
-
   )
 }
 

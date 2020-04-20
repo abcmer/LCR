@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import './App.css';
+import './style.css';
+import axios from 'axios'
 
 const NewGameForm = () => {
   const [rollTimeout, setRollTimeout] = useState(10)
@@ -17,12 +18,29 @@ const NewGameForm = () => {
         break;
       case "maxSeats":
         setMaxSeats(value)
+        break;
+      default:
+        console.log('unkown case')
     }
   }
 
   const handleSubmit = (e) => {
     console.log(rollTimeout, minSeats, maxSeats)
     e.preventDefault();
+    axios.post('http://localhost:5000/api/games', {
+      "created": "2020-04-18 12:00:00",
+      "config": {
+        rollTimeout,
+        minSeats,
+        maxSeats,
+        "startTime": "2020-04-18 13:00:00",
+        "initialChipCount": 3
+      }
+    })
+    .then(function (response) {
+      console.log(response)
+      window.location.href = 'http://localhost:3000/games-list'
+    })
   }
   
 

@@ -64,6 +64,10 @@ router.post('/games', async (req, res, next) => {
   // Set centerChipCount
   req.body.centerChipCount = 0
 
+  // Set access control headers
+  // res.header('Access-Control-Allow-Origin: *');
+  // res.header('Access-Control-Allow-Origin: <origin>')
+
   Game.create(req.body)
   .then(data => res.json(data))
   .catch(next)

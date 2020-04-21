@@ -48,7 +48,6 @@ const NewGameForm = () => {
       console.log(response)
       setGameId(response.data._id)
       console.log(response.data._id)
-      // window.location.href = 'http://localhost:3000/games-list'
     })
   }
   

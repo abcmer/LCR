@@ -6,7 +6,6 @@ import {
   Link
 } from "react-router-dom";
 import NewGameForm from './screens/NewGameForm';
-import GamesList from './screens/GamesList';
 import Game from './screens/Game';
 import axios from 'axios';
 import './App.css';

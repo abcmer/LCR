@@ -1,6 +1,5 @@
 import React from 'react'
 
-import './style.css'
 const Table = (props) => {
   console.log(props.gameData)
   const {activeSeatNumber, seats, centerChipCount} = props.gameData;
@@ -17,13 +16,14 @@ const Table = (props) => {
         rotate(${ang})
         translate(0, ${1 * radius * 1.1})
         `}
+        fill="gray"
       />
     )
   }
 
   const renderCenterChipCount = () => {
     return(        
-      <text width={20} transform={`
+      <text fill='white' width={20} transform={`
         translate(180,180)
         `}>
         {centerChipCount}
@@ -35,7 +35,7 @@ const Table = (props) => {
     return seats.map((s, i) => {
       const ang = (360/seats.length) * i
       return(        
-        <text width={20} transform={`
+        <text fill='white' width={20} transform={`
           translate(180,180)
           rotate(${ang})
           translate(0, ${1 * radius * .85})

@@ -103,14 +103,14 @@ router.put('/games/:id', async (req, res, next) => {
 router.put('/games/:gameId/rolls', async (req, res) => {
   // Parse auth token, gameId, user
   const {gameId} = req.params;
-  const {username} = req.query;
+  const {seatId} = req.query;
   try {    
     var game = await Game.findById(gameId).exec();
-    const seatNumber = game.seats.find(s => s.username == username).seatNumber
-    const userChipCount = game.seats[seatNumber].chipCount;
+    const seat = game.seats.find(s => s._id == seatId)
+    const seatNumber = seat.seatNumber
 
     // Determine number of rolls
-    const numberOfRolls = getNumberOfRolls(userChipCount)
+    const numberOfRolls = getNumberOfRolls(seat.chipCount)
 
     if (!numberOfRolls) {
       res.status(400).send({status: 'error', msg: 'User must have at least 1 chip to roll.'});
@@ -122,7 +122,7 @@ router.put('/games/:gameId/rolls', async (req, res) => {
     }
 
     game.rolls.push({
-      seatNumber,
+      seat,
       outcome
     })
     

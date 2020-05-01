@@ -32,7 +32,7 @@ const ConfigSchema = new Schema({
 })
 
 const RollSchema = new Schema({
-  seatNumber: Number,
+  seat: SeatSchema,
   outcome: [Number]
 })
 

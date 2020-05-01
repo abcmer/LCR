@@ -4,8 +4,9 @@ import {
   useParams
 } from 'react-router-dom';
 import axios from 'axios';
-import {Container, Grid, Paper, Button } from '@material-ui/core/';
+import {Grid, Button } from '@material-ui/core/';
 import Table from '../../components/Table/Table'
+import RollHistory from '../../components/RollHistory/RollHistory'
 import './style.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -39,10 +40,11 @@ const Game = () => {
 
   const handleRoll = async (activeSeatNumber) => {
     const activeSeat = seats.find(s => s.seatNumber == activeSeatNumber)
-    const username = activeSeat.username
-    console.log('username:', username)
+    const seatId = activeSeat._id;
+    // const username = activeSeat.username
+    console.log('seatId:', seatId)
 
-    const response = await axios.put(`http://localhost:5000/api/games/${gameId}/rolls?username=${username}`)
+    const response = await axios.put(`http://localhost:5000/api/games/${gameId}/rolls?seatId=${seatId}`)
     const gameData = response.data
     const roll = rolls[rolls.length -1]
     setRolls(response.data.rolls)
@@ -50,7 +52,7 @@ const Game = () => {
       setSeats(response.data.seats) 
       setActiveSeatNumber(response.data.activeSeatNumber)      
       setCenterChipCount(response.data.centerChipCount)
-    }, 2000);
+    }, 1000);
 
   }
 
@@ -88,13 +90,21 @@ const Game = () => {
     centerChipCount
   }
   return(
-    <Container>
-      {seats != [] ? <Table gameData={gameData}/>  : null}
-      {rolls.length > 0 ? getRollOutcome() : <div></div>}
-      <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained" color="primary">
-        Roll
-      </Button>       
-    </Container>
+    <Grid container spacing={3}>
+      <Grid item xs={6}>
+        {seats != [] ? <Table gameData={gameData}/>  : null}
+      </Grid>
+      <Grid item xs={6}>
+        <RollHistory rolls={rolls}/>
+        {rolls.length > 0 ? getRollOutcome() : <div></div>}
+        <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained" color="primary">
+          Roll
+        </Button>  
+      </Grid>      
+    
+      
+     
+    </Grid>
   )
 }
 

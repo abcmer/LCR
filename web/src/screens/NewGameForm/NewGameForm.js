@@ -37,8 +37,8 @@ const NewGameForm = () => {
     axios.post('http://localhost:5000/api/games', {
       "created": "2020-04-18 12:00:00",
       "config": {
-        rollTimeout,
-        minSeats,
+        rollTimeout: 10,
+        minSeats: 2,
         maxSeats,
         "startTime": "2020-04-18 13:00:00",
         "initialChipCount": 3
@@ -60,15 +60,7 @@ const NewGameForm = () => {
             <h1>New Game Form</h1>    
             <form onSubmit={handleSubmit}>
               <label>
-                Roll Timeout:
-                <input type="text" defaultValue={rollTimeout} name="rollTimeout" onChange={handleChange} />
-              </label>
-              <label>
-                Min Seats:
-                <input type="text" defaultValue={minSeats} name="minSeats" onChange={handleChange} />
-              </label>
-              <label>
-                Max Seats:
+                Table Size:
                 <input type="text" defaultValue={maxSeats} name="maxSeats" onChange={handleChange} />
               </label>
               <input type="submit" value="Submit" />

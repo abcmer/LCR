@@ -5,26 +5,26 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import NewGameForm from './screens/NewGameForm';
+import NewGameForm from './screens/NewGameForm/NewGameForm';
 import Game from './screens/Game/Game';
 import axios from 'axios';
-import {Container} from '@material-ui/core';
+import {Container, Button} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
 
-import './App.css';
+// import './App.css';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+const useStyles = makeStyles({
+  app: {
+    background: '#20222A',
+    border: 0,
+    color: 'white',
+    height: '1000px',
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
+  newGameButton: {
+    color: 'white'
+  }
+}); 
 
 function App() {
   const classes = useStyles();
@@ -40,28 +40,29 @@ function App() {
   }, [])
 
   return (
-    <Router>
-      <Container className="App">
-      <Switch>
-          <Route exact path="/">
-            <header className="App-header">
-            <Link
-              className="App-link"
-              to="/new-game"
-            >
-              New Game
-            </Link>          
-            </header>
-          </Route>
-          <Route exact path="/new-game">
-            <NewGameForm />
-          </Route>                  
-          <Route exact path="/games/:gameId">
-            <Game/>
-          </Route>
-        </Switch>
-      </Container>
-    </Router>
+    <div className={classes.app}>
+      <Router>
+        <Container className="App">
+        <Switch>
+            <Route exact path="/">
+              <Button className={classes.newGameButton}>
+              <Link
+                to="/new-game"
+              >
+                New Game
+              </Link>    
+              </Button>      
+            </Route>
+            <Route exact path="/new-game">
+              <NewGameForm />
+            </Route>                  
+            <Route exact path="/games/:gameId">
+              <Game/>
+            </Route>
+          </Switch>
+        </Container>
+      </Router>
+    </div>
   );
 }
 

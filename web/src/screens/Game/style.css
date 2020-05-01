@@ -2,3 +2,49 @@
   display: flex;
   align-self: center;
 }
+
+#table {
+  width: 300px;
+  height: 300px;
+  background: #166633;
+  border-radius: 400px;
+  z-index: 0;
+}
+
+.inner_face {
+  position: relative;
+  width: 88%;
+  height: 88%;
+  background: white;
+  -moz-border-radius: 1000px;
+  -webkit-border-radius: 1000px;
+  border-radius: 1000px;
+  z-index: 1000;
+  left: 6%; /* center DIV horizontally (100%-88% / 2) */
+  top: 6% /* center DIV vertically (100%-88% / 2) */
+  }
+  
+  .inner_face::before {
+  /* clock center dot small */
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  margin-left: -9px;
+  margin-top: -9px;
+  background: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-shadow: 0 0 30px gray
+  }
+  
+  .inner_face::after {
+  content: "QUARTZ";
+  position: absolute;
+  width: 100%;
+  font: normal 0.8em Arial;
+  color: gray;
+  text-align: center;
+  top: 85%
+  }

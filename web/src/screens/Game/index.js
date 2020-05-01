@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 import {Container, Grid, Paper, Button } from '@material-ui/core/';
+import Table from '../../components/Table'
 import './style.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -22,29 +23,38 @@ const useStyles = makeStyles((theme) => ({
 
 const Game = () => {
   const {gameId} = useParams();
-  const [gameData, setGameData] = useState([])
   const [seats, setSeats] = useState([])
-  const [spacing, setSpacing] = React.useState(2);
-  const classes = useStyles();
-
+  const [activeSeatNumber, setActiveSeatNumber] = useState(0)
+  const [rolls, setRolls] = useState([])
+  const [centerChipCount, setCenterChipCount] = useState([])
+  console.log('gameId', gameId)
   const fetchGameData = async () => {
     const response = await axios.get(`http://localhost:5000/api/games/${gameId}`)
-    setGameData(response.data)
-    setSeats(response.data.seats) 
+    // setGameData(response.data)  
+    setSeats(response.data.seats)   
+    setActiveSeatNumber(response.data.activeSeatNumber)
+    setRolls(response.data.rolls)
+    setCenterChipCount(response.data.centerChipCount)
   }
 
-  const handleRoll = async (username) => {
-    console.log('roll', username)
+  const handleRoll = async (activeSeatNumber) => {
+    const activeSeat = seats.find(s => s.seatNumber == activeSeatNumber)
+    const username = activeSeat.username
+    console.log('username:', username)
+
     const response = await axios.put(`http://localhost:5000/api/games/${gameId}/rolls?username=${username}`)
     const gameData = response.data
-    const roll = gameData.rolls[gameData.rolls.length -1]
+    const roll = rolls[rolls.length -1]
     console.log(roll)
-    setGameData(response.data)
+    // setGameData(response.data)
     setSeats(response.data.seats) 
+    setActiveSeatNumber(response.data.activeSeatNumber)
+    setRolls(response.data.rolls)    
+    setCenterChipCount(response.data.centerChipCount)
   }
 
   const getRollOutcome = () => {
-    const lastRoll = gameData.rolls[gameData.rolls.length -1]
+    const lastRoll = rolls[rolls.length -1]
     return lastRoll.outcome.map(r => {
       switch (r){
         case 1:
@@ -67,33 +77,22 @@ const Game = () => {
   }  
 
   useEffect(() => {
+    console.log('useEffect')
     fetchGameData()
   }, [])
 
-  const {_id} = gameData;
-  
+  const gameData = {
+    activeSeatNumber,
+    seats,
+    centerChipCount
+  }
   return(
     <Container>
-      <h2>Center Chip Count: {gameData.centerChipCount}</h2>
-      <Grid container className={classes.root} spacing={2}>
-        <Grid item xs={12}>
-          <Grid container justify="center" spacing={spacing}>
-          {seats.map(s => {
-            console.log(s.seatNumber)
-            return (
-              <Paper className={classes.paper} key={s._id}>
-                <h4>{`${s.username}` || s.seatNumber}</h4>
-                <div>{s.chipCount}</div>  
-                <Button onClick={() => handleRoll(s.username)} variant="contained" color="primary">
-                  Roll
-                </Button>                              
-              </Paper>
-            )
-          })}
-          </Grid>
-        </Grid>
-      </Grid>
-      {/* {gameData.rolls.length > 0 && getRollOutcome()} */}
+      {seats != [] ? <Table gameData={gameData}/>  : null}
+      {rolls.length > 0 ? getRollOutcome() : <div></div>}
+      <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained" color="primary">
+        Roll
+      </Button>       
     </Container>
   )
 }

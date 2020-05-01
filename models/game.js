@@ -28,7 +28,7 @@ const ConfigSchema = new Schema({
   initialChipCount: {
     type: Number,
     required: [true, "initialChipCount field is required"]
-  }   
+  }
 })
 
 const RollSchema = new Schema({
@@ -44,7 +44,12 @@ const GameSchema = new Schema({
   centerChipCount: Number,
   config: ConfigSchema,
   seats: [SeatSchema],
-  rolls: [RollSchema]
+  rolls: [RollSchema],
+  activeSeatNumber: {
+    type: Number,
+    required: [true, "activeSeatNumber field is required"],
+    default: 0
+  }
 })
 
 const Game = mongoose.model('game', GameSchema);

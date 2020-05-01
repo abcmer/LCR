@@ -8,9 +8,26 @@ import {
 import NewGameForm from './screens/NewGameForm';
 import Game from './screens/Game';
 import axios from 'axios';
+import {Container} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import { makeStyles } from '@material-ui/core/styles';
+
 import './App.css';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
+
 function App() {
+  const classes = useStyles();
   const [games, setGames] = useState([])
 
   const fetchGames = async () => {
@@ -24,8 +41,8 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <Switch>
+      <Container className="App">
+      <Switch>
           <Route exact path="/">
             <header className="App-header">
             <Link
@@ -43,7 +60,7 @@ function App() {
             <Game/>
           </Route>
         </Switch>
-      </div>
+      </Container>
     </Router>
   );
 }

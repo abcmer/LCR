@@ -55,8 +55,8 @@ router.post('/games', async (req, res, next) => {
   for (i=0; i < maxSeats; i++) {
     seats.push({
       "seatNumber": i,
-      "username": null,
-      "chipCount": 0,
+      "username": `user${i}`,
+      "chipCount": 3,
     })
   }
   req.body.seats = seats
@@ -149,7 +149,9 @@ router.put('/games/:gameId/rolls', async (req, res) => {
         default:
           console.log("user rolls STAY")
       }
-    })    
+    })
+    game.activeSeatNumber = getNextActiveSeat(game.seats, game.activeSeatNumber)    
+    console.log(getNextActiveSeat(game.seats, game.activeSeatNumber))
     var result = await game.save();
     res.send(result);
   } catch (error) {
@@ -195,6 +197,15 @@ const getNumberOfRolls = (chipCount) => {
   } else {
     return chipCount
   }
+}
+
+const getNextActiveSeat = (seats, activeSeatNumber) => {
+  // Find the next player to the left with at least 1 chip
+  console.log('seats', seats)
+  console.log(activeSeatNumber)  
+  const nextSeats = seats.slice(activeSeatNumber + 1,seats.length).concat(seats.slice(0,activeSeatNumber + 1))
+  console.log('nextSeats', nextSeats)
+  return nextSeats.find(s => s.chipCount > 0).seatNumber
 }
 
 module.exports = router;

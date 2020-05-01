@@ -12,8 +12,6 @@ import {Container, Button} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
 
-// import './App.css';
-
 const useStyles = makeStyles({
   app: {
     background: '#20222A',

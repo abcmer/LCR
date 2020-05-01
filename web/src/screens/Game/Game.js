@@ -48,12 +48,9 @@ const Game = () => {
     const gameData = response.data
     const roll = rolls[rolls.length -1]
     setRolls(response.data.rolls)
-    setTimeout(() => {  
-      setSeats(response.data.seats) 
-      setActiveSeatNumber(response.data.activeSeatNumber)      
-      setCenterChipCount(response.data.centerChipCount)
-    }, 1000);
-
+    setSeats(response.data.seats) 
+    setActiveSeatNumber(response.data.activeSeatNumber)      
+    setCenterChipCount(response.data.centerChipCount)
   }
 
   const getRollOutcome = () => {
@@ -96,14 +93,10 @@ const Game = () => {
       </Grid>
       <Grid item xs={6}>
         <RollHistory rolls={rolls}/>
-        {rolls.length > 0 ? getRollOutcome() : <div></div>}
         <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained" color="primary">
           Roll
         </Button>  
-      </Grid>      
-    
-      
-     
+      </Grid>                    
     </Grid>
   )
 }

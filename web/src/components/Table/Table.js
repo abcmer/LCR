@@ -7,7 +7,7 @@ const Table = (props) => {
   const numOfSeats = seats.length || 12;
 
   const renderActiveSeatDot = () => {
-    const ang = 30 * activeSeatNumber
+    const ang = (360/seats.length) * activeSeatNumber
     return(
       <circle 
         r="8"

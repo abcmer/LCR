@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 import {Container, Grid, Paper, Button } from '@material-ui/core/';
-import Table from '../../components/Table'
+import Table from '../../components/Table/Table'
 import './style.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -45,12 +45,13 @@ const Game = () => {
     const response = await axios.put(`http://localhost:5000/api/games/${gameId}/rolls?username=${username}`)
     const gameData = response.data
     const roll = rolls[rolls.length -1]
-    console.log(roll)
-    // setGameData(response.data)
-    setSeats(response.data.seats) 
-    setActiveSeatNumber(response.data.activeSeatNumber)
-    setRolls(response.data.rolls)    
-    setCenterChipCount(response.data.centerChipCount)
+    setRolls(response.data.rolls)
+    setTimeout(() => {  
+      setSeats(response.data.seats) 
+      setActiveSeatNumber(response.data.activeSeatNumber)      
+      setCenterChipCount(response.data.centerChipCount)
+    }, 2000);
+
   }
 
   const getRollOutcome = () => {

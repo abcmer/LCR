@@ -6,7 +6,7 @@ import {
   Link
 } from "react-router-dom";
 import NewGameForm from './screens/NewGameForm';
-import Game from './screens/Game';
+import Game from './screens/Game/Game';
 import axios from 'axios';
 import {Container} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';

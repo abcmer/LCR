@@ -1,9 +1,22 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 const Table = (props) => {
   const {activeSeatNumber, seats, centerChipCount} = props.gameData;
-  const radius = 150
-  const numOfSeats = seats.length || 12;
+  
+  const [svgHeight, setSvgHeight] = useState(window.innerHeight);
+  const [svgWidth, setSvgWidth] = useState(window.innerWidth);
+  const radius = svgWidth * .17
+
+  const updateDimensions = () => {
+    setSvgHeight(window.innerHeight);
+    setSvgWidth(window.innerWidth)
+  }
+
+  useEffect(() => {
+    console.log('useEffect')
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+  }, [])
 
   const renderActiveSeatDot = () => {
     const ang = (360/seats.length) * activeSeatNumber
@@ -13,7 +26,7 @@ const Table = (props) => {
         stroke="black"
         stroke-width="3"
         transform={`
-        translate(180,180)
+        translate(${svgWidth * .2}, ${svgWidth * .2})
         rotate(${ang})
         translate(0, ${1 * radius * 1.1})
         `}
@@ -31,8 +44,9 @@ const Table = (props) => {
         font-weight="bold"
         font-size="20"
         transform={`
-        translate(180,180)
-        `}>
+        translate(${svgWidth * .2}, ${svgWidth * .2})
+        `}
+        >
         {centerChipCount}
       </text>
     )
@@ -48,7 +62,7 @@ const Table = (props) => {
           text-anchor="middle"
           alignment-baseline="middle"
           transform={`
-          translate(180,180)
+          translate(${svgWidth * .2}, ${svgWidth * .2})
           rotate(${ang})
           translate(0, ${1 * radius * .88})
           rotate(${-ang})
@@ -59,18 +73,20 @@ const Table = (props) => {
     })
   }
   return (
-    <svg style={{'height': '360', width: '360'}}>     
-      <circle
-        cx="180"
-        cy="180"
-        r="150"
-        fill="#35654d"
-        stroke="black"
-        stroke-width="8"        
-      />
-      {renderActiveSeatDot()}
-      {renderPlayerChipCounts()}
-      {renderCenterChipCount()}
+    <svg style={{'height': svgHeight, width: svgWidth / 2}}>
+      <g>
+        <circle
+          cx={svgWidth * .2}
+          cy={svgWidth * .2}
+          r={radius}
+          fill="#35654d"
+          stroke="black"
+          stroke-width="8"        
+        />
+        {renderActiveSeatDot()}
+        {renderPlayerChipCounts()}
+        {renderCenterChipCount()}
+      </g>
     </svg>
   )
 }

@@ -1,6 +1,4 @@
 function timeDifference(current, previous) {
-  console.log('CURRENT', current)
-  console.log('prev', previous)
 
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;

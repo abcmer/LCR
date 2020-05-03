@@ -19,7 +19,6 @@ const getRecentRolls = rolls => {
 }
 
 const renderRollHistoryEvent = (roll) => {
-  console.log('roll', roll)
   const displayName = roll.seat.username.slice(0,10)
   const timediff = timeDifference(new Date, new Date(roll.date))
   return(

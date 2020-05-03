@@ -1,5 +1,6 @@
 import React from 'react';
 import Die from '../Icons/Die'
+import NeutralDie from '../Icons/NeutralDie'
 import {timeDifference} from '../../utils'
 
 
@@ -27,11 +28,8 @@ const renderRollHistoryEvent = (roll) => {
         <text
           fill='white'
           font-size='20'
-          // text-anchor="middle"
           alignment-baseline="hanging"
-          // font-weight="bold"
           font-size="20"   
-          // y='10'     
         >
           {timediff}: {displayName}
         </text>
@@ -58,7 +56,7 @@ const getRollOutcome = (roll) => {
         return <Die index={i} char='C'/>
         break;
       default:
-        return <Die index={i} char='S'/>
+        return <NeutralDie index={i} />
     }
   })
 }

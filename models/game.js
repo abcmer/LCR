@@ -33,7 +33,8 @@ const ConfigSchema = new Schema({
 
 const RollSchema = new Schema({
   seat: SeatSchema,
-  outcome: [Number]
+  outcome: [Number],
+  date: { type: Date, default: Date.now },
 })
 
 const GameSchema = new Schema({

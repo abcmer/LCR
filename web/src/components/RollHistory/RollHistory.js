@@ -1,5 +1,6 @@
 import React from 'react';
 import Die from '../Icons/Die'
+import {timeDifference} from '../../utils'
 
 
 const styles = {
@@ -20,6 +21,7 @@ const getRecentRolls = rolls => {
 const renderRollHistoryEvent = (roll) => {
   console.log('roll', roll)
   const displayName = roll.seat.username.slice(0,10)
+  const timediff = timeDifference(new Date, new Date(roll.date))
   return(
     <svg height='30'>
       <g>
@@ -32,7 +34,7 @@ const renderRollHistoryEvent = (roll) => {
           font-size="20"   
           // y='10'     
         >
-          2s ago: {displayName}
+          {timediff}: {displayName}
         </text>
         <g
           transform={`

@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Table = (props) => {
-  console.log(props.gameData)
   const {activeSeatNumber, seats, centerChipCount} = props.gameData;
   const radius = 150
   const numOfSeats = seats.length || 12;

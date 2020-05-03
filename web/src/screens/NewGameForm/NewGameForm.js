@@ -27,12 +27,10 @@ const NewGameForm = () => {
         setMaxSeats(value)
         break;
       default:
-        console.log('unkown case')
     }
   }
 
   const handleSubmit = (e) => {
-    console.log(rollTimeout, minSeats, maxSeats)
     e.preventDefault();
     axios.post('http://localhost:5000/api/games', {
       "created": "2020-04-18 12:00:00",
@@ -45,9 +43,7 @@ const NewGameForm = () => {
       }
     })
     .then(function (response) {
-      console.log(response)
       setGameId(response.data._id)
-      console.log(response.data._id)
     })
   }
   

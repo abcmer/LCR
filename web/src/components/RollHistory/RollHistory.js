@@ -29,19 +29,15 @@ const getRollOutcome = (roll) => {
   return roll.outcome.map((r, i) => {
     switch (r){
       case 1:
-        console.log('LEFT')
         return <Die index={i} char='L'/>
         break;
       case 2:
-        console.log('RIGHT')
         return <Die index={i} char='R'/>
         break;
       case 3:
-        console.log('CENTER')
         return <Die index={i} char='C'/>
         break;
       default:
-        console.log('SAFE')
         return <Die index={i} char='S'/>
     }
   })
@@ -55,7 +51,6 @@ const renderRollHistory = (rolls) => {
 
 const RollHistory = (props) => {
   const {rolls} = props;
-  console.log('rolls', props.rolls)
   return(
     <div>
       {renderRollHistory(getRecentRolls(rolls))}

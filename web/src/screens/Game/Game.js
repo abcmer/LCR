@@ -29,7 +29,6 @@ const Game = () => {
   const [activeSeatNumber, setActiveSeatNumber] = useState(0)
   const [rolls, setRolls] = useState([])
   const [centerChipCount, setCenterChipCount] = useState([])
-  console.log('gameId', gameId)
   const fetchGameData = async () => {
     const response = await axios.get(`http://localhost:5000/api/games/${gameId}`)
     // setGameData(response.data)  
@@ -43,7 +42,6 @@ const Game = () => {
     const activeSeat = seats.find(s => s.seatNumber == activeSeatNumber)
     const seatId = activeSeat._id;
     // const username = activeSeat.username
-    console.log('seatId:', seatId)
 
     const response = await axios.put(`http://localhost:5000/api/games/${gameId}/rolls?seatId=${seatId}`)
     const gameData = response.data
@@ -59,26 +57,21 @@ const Game = () => {
     return lastRoll.outcome.map(r => {
       switch (r){
         case 1:
-          console.log('LEFT')
           return <div>LEFT</div>
           break;
         case 2:
-          console.log('RIGHT')
           return <div>RIGHT</div>
           break;
         case 3:
-          console.log('CENTER')
           return <div>CENTER</div>
           break;
         default:
-          console.log('SAFE')
           return <div>SAFE</div>
       }
     })
   }  
 
   useEffect(() => {
-    console.log('useEffect')
     fetchGameData()
   }, [])
 

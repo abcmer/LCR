@@ -1,7 +1,6 @@
 import React from 'react';
 export default (props) => {
   const {index, char} = props;
-  console.log('props', props)
   const rectX = index * 25
   const textX = rectX + 10
   return(

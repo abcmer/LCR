@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   useParams
@@ -96,6 +97,12 @@ const Game = () => {
         <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained">
           Roll
         </Button>  
+        <Button
+          component={Link} to="/new-game"
+          variant="contained"        
+        >
+          New Game
+        </Button>
       </Grid>                    
     </Grid>
     

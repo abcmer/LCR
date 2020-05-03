@@ -13,13 +13,12 @@ const styles = {
 }
 
 const getRecentRolls = rolls => {
-  return rolls.slice(rolls.length - 7, rolls.length)
+  return rolls.slice(rolls.length - 8, rolls.length)
 }
 
 const renderRollHistoryEvent = (roll) => {
   return(
     <svg height='30'>
-      <div style={styles.username}>{roll.seat.username} </div>
       <g>{getRollOutcome(roll)}</g> 
     </svg>
   )

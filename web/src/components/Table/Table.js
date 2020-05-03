@@ -27,9 +27,10 @@ const Table = (props) => {
     return(        
       <text
         fill='white'
-        width={20}
         text-anchor="middle"
         alignment-baseline="middle"
+        font-weight="bold"
+        font-size="20"
         transform={`
         translate(180,180)
         `}>

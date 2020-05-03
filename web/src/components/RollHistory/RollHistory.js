@@ -13,7 +13,8 @@ const styles = {
 }
 
 const getRecentRolls = rolls => {
-  return rolls.slice(rolls.length - 8, rolls.length)
+  if (rolls.length <= 8) return rolls;
+  else return rolls.slice(rolls.length - 8, rolls.length)
 }
 
 const renderRollHistoryEvent = (roll) => {

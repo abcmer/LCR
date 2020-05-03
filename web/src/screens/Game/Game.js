@@ -93,11 +93,12 @@ const Game = () => {
       </Grid>
       <Grid item xs={6}>
         <RollHistory rolls={rolls}/>
-        <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained" color="primary">
+        <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained">
           Roll
         </Button>  
       </Grid>                    
     </Grid>
+    
   )
 }
 

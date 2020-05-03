@@ -11,19 +11,26 @@ const Table = (props) => {
     return(
       <circle 
         r="8"
+        stroke="black"
+        stroke-width="3"
         transform={`
         translate(180,180)
         rotate(${ang})
         translate(0, ${1 * radius * 1.1})
         `}
-        fill="gray"
+        fill="white"
       />
     )
   }
 
   const renderCenterChipCount = () => {
     return(        
-      <text fill='white' width={20} transform={`
+      <text
+        fill='white'
+        width={20}
+        text-anchor="middle"
+        alignment-baseline="middle"
+        transform={`
         translate(180,180)
         `}>
         {centerChipCount}
@@ -35,10 +42,15 @@ const Table = (props) => {
     return seats.map((s, i) => {
       const ang = (360/seats.length) * i
       return(        
-        <text fill='white' width={20} transform={`
+        <text 
+          fill='white' 
+          width={20}
+          text-anchor="middle"
+          alignment-baseline="middle"
+          transform={`
           translate(180,180)
           rotate(${ang})
-          translate(0, ${1 * radius * .85})
+          translate(0, ${1 * radius * .88})
           rotate(${-ang})
           `}>
           {s.chipCount}
@@ -53,6 +65,8 @@ const Table = (props) => {
         cy="180"
         r="150"
         fill="#35654d"
+        stroke="black"
+        stroke-width="8"        
       />
       {renderActiveSeatDot()}
       {renderPlayerChipCounts()}

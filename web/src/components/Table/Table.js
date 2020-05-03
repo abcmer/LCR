@@ -59,7 +59,7 @@ const Table = (props) => {
     })
   }
   return (
-    <svg style={{'height': '360', width: '360'}}>
+    <svg style={{'height': '360', width: '360'}}>     
       <circle
         cx="180"
         cy="180"

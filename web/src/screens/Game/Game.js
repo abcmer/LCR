@@ -87,15 +87,21 @@ const Game = () => {
       </Grid>
       <Grid item xs={6}>
         <RollHistory rolls={rolls}/>
-        <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained">
-          Roll
-        </Button>  
-        <Button
-          component={Link} to="/new-game"
-          variant="contained"        
-        >
-          New Game
-        </Button>
+        <Grid container spacing={2}>
+          <Grid item={5}>
+            <Button onClick={() => handleRoll(activeSeatNumber)} variant="contained">
+              Roll
+            </Button>  
+          </Grid>   
+          <Grid item={5}>  
+            <Button
+              component={Link} to="/new-game"
+              variant="contained"        
+            >
+              New Game
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>                    
     </Grid>
     

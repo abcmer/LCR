@@ -18,9 +18,28 @@ const getRecentRolls = rolls => {
 }
 
 const renderRollHistoryEvent = (roll) => {
+  console.log('roll', roll)
+  const displayName = roll.seat.username.slice(0,10)
   return(
     <svg height='30'>
-      <g>{getRollOutcome(roll)}</g> 
+      <g>
+        <text
+          fill='white'
+          font-size='20'
+          // text-anchor="middle"
+          alignment-baseline="hanging"
+          // font-weight="bold"
+          font-size="20"   
+          // y='10'     
+        >
+          2s ago: {displayName}
+        </text>
+        <g
+          transform={`
+            translate(140,0)
+          `}      
+        >{getRollOutcome(roll)}</g> 
+      </g>
     </svg>
   )
 }
@@ -51,9 +70,13 @@ const renderRollHistory = (rolls) => {
 
 const RollHistory = (props) => {
   const {rolls} = props;
+  const recentRolls = getRecentRolls(rolls);
+  const style = {
+    marginTop: '30px'
+  }
   return(
-    <div>
-      {renderRollHistory(getRecentRolls(rolls))}
+    <div style={style}>
+      {renderRollHistory(recentRolls)}
     </div>
   )
 }

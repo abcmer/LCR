@@ -1,9 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Die from '../Icons/Die'
+
 
 const styles = {
   rollHistoryEvent: {
@@ -21,31 +18,31 @@ const getRecentRolls = rolls => {
 
 const renderRollHistoryEvent = (roll) => {
   return(
-    <p style={styles.rollHistoryEvent}>
+    <svg height='30'>
       <div style={styles.username}>{roll.seat.username} </div>
-      <div>{getRollOutcome(roll)}</div> 
-    </p>
+      <g>{getRollOutcome(roll)}</g> 
+    </svg>
   )
 }
 
 const getRollOutcome = (roll) => {
-  return roll.outcome.map(r => {
+  return roll.outcome.map((r, i) => {
     switch (r){
       case 1:
         console.log('LEFT')
-        return <ArrowBackIcon/>
+        return <Die index={i} char='L'/>
         break;
       case 2:
         console.log('RIGHT')
-        return <ArrowForwardIcon/>
+        return <Die index={i} char='R'/>
         break;
       case 3:
         console.log('CENTER')
-        return <CenterFocusStrongIcon/>
+        return <Die index={i} char='C'/>
         break;
       default:
         console.log('SAFE')
-        return <CheckCircleIcon/>
+        return <Die index={i} char='S'/>
     }
   })
 }

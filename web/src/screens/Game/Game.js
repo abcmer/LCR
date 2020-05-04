@@ -8,7 +8,9 @@ import axios from 'axios';
 import {Grid, Button } from '@material-ui/core/';
 import Table from '../../components/Table/Table'
 import RollHistory from '../../components/RollHistory/RollHistory'
-// import './style.css'
+import useSound from 'use-sound';
+import diceRollSfx from '../../sounds/diceRollSfx.mp3'
+import snakeEyesSfx from '../../sounds/snakeEyesSfx.mp3'
 
 const Game = () => {
   const {gameId} = useParams();
@@ -16,6 +18,8 @@ const Game = () => {
   const [activeSeatNumber, setActiveSeatNumber] = useState(0)
   const [rolls, setRolls] = useState([])
   const [centerChipCount, setCenterChipCount] = useState([])
+  const [playDiceRollSfx] = useSound(diceRollSfx);
+  const [playSnakeEyesSfx] = useSound(snakeEyesSfx);
   const fetchGameData = async () => {
     const response = await axios.get(`http://localhost:5000/api/games/${gameId}`)
     // setGameData(response.data)  
@@ -28,11 +32,14 @@ const Game = () => {
   const handleRoll = async (activeSeatNumber) => {
     const activeSeat = seats.find(s => s.seatNumber == activeSeatNumber)
     const seatId = activeSeat._id;
-    // const username = activeSeat.username
 
     const response = await axios.put(`http://localhost:5000/api/games/${gameId}/rolls?seatId=${seatId}`)
-    const gameData = response.data
-    const roll = rolls[rolls.length -1]
+
+    // Play sound effects
+    const roll = response.data.rolls[response.data.rolls.length - 1]
+
+    playDiceRollSfx()
+
     setRolls(response.data.rolls)
     setSeats(response.data.seats) 
     setActiveSeatNumber(response.data.activeSeatNumber)      

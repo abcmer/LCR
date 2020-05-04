@@ -8,20 +8,7 @@ import axios from 'axios';
 import {Grid, Button } from '@material-ui/core/';
 import Table from '../../components/Table/Table'
 import RollHistory from '../../components/RollHistory/RollHistory'
-import './style.css'
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    height: 140,
-    width: 100,
-  },
-  control: {
-    padding: theme.spacing(2),
-  },
-}));
+// import './style.css'
 
 const Game = () => {
   const {gameId} = useParams();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Die from '../Icons/Die'
 import NeutralDie from '../Icons/NeutralDie'
 import {timeDifference} from '../../utils'
@@ -11,25 +11,49 @@ const styles = {
   username: {
     marginRight: '5px'
   }  
+}
+
+const RollHistory = (props) => {
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const svgWidth = windowWidth / 2 
+  const svgHeight = windowWidth / 2;
+  const {rolls} = props;
+  const style = {
+    marginTop: '30px'
+  }
+
+  const updateDimensions = () => {
+    setWindowHeight(window.innerHeight);
+    setWindowWidth(window.innerWidth)
+    console.log(windowHeight)
+    console.log(windowWidth)
+  }
+
+  useEffect(() => {
+    console.log('useEffect')
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+  }, [])  
+
+
+  const getRecentRolls = rolls => {
+    const numberToShow = Math.floor(svgHeight * .8 / 30)
+    if (rolls.length <= numberToShow) return rolls;
+    else return rolls.slice(rolls.length - numberToShow, rolls.length)
+  }
   
-}
-
-const getRecentRolls = rolls => {
-  if (rolls.length <= 8) return rolls;
-  else return rolls.slice(rolls.length - 8, rolls.length)
-}
-
-const renderRollHistoryEvent = (roll) => {
-  const displayName = roll.seat.username.slice(0,10)
-  const timediff = timeDifference(new Date, new Date(roll.date))
-  return(
-    <svg height='30'>
+  const renderRollHistoryEvent = (roll, eventIndex) => {
+    const displayName = roll.seat.username.slice(0,10)
+    const timediff = timeDifference(new Date, new Date(roll.date))
+    return(      
       <g>
         <text
           fill='white'
           font-size='20'
           alignment-baseline="hanging"
-          font-size="20"   
+          font-size="20"
+          y={eventIndex * 30}   
         >
           {timediff}: {displayName}
         </text>
@@ -37,45 +61,41 @@ const renderRollHistoryEvent = (roll) => {
           transform={`
             translate(140,0)
           `}      
-        >{getRollOutcome(roll)}</g> 
+        >{getRollOutcome(roll, eventIndex)}</g> 
       </g>
-    </svg>
-  )
-}
-
-const getRollOutcome = (roll) => {
-  return roll.outcome.map((r, i) => {
-    switch (r){
-      case 1:
-        return <Die index={i} char='L'/>
-        break;
-      case 2:
-        return <Die index={i} char='R'/>
-        break;
-      case 3:
-        return <Die index={i} char='C'/>
-        break;
-      default:
-        return <NeutralDie index={i} />
-    }
-  })
-}
-
-const renderRollHistory = (rolls) => {
-  return <div>
-    {rolls.map(roll => renderRollHistoryEvent(roll))}
-  </div>
-}
-
-const RollHistory = (props) => {
-  const {rolls} = props;
-  const recentRolls = getRecentRolls(rolls);
-  const style = {
-    marginTop: '30px'
+    )
   }
+  
+  const getRollOutcome = (roll, eventIndex) => {
+    return roll.outcome.map((r, i) => {
+      switch (r){
+        case 1:
+          return <Die rollIndex={i} eventIndex={eventIndex} eventIndex={eventIndex} char='L'/>
+          break;
+        case 2:
+          return <Die rollIndex={i} eventIndex={eventIndex} char='R'/>
+          break;
+        case 3:
+          return <Die rollIndex={i} eventIndex={eventIndex} char='C'/>
+          break;
+        default:
+          return <NeutralDie rollIndex={i} eventIndex={eventIndex} />
+      }
+    })
+  }
+  
+  const renderRollHistory = (rolls) => {
+    return <g>
+      {rolls.map((roll, index) => renderRollHistoryEvent(roll, index))}
+    </g>
+  }  
+
+  const recentRolls = getRecentRolls(rolls);
   return(
     <div style={style}>
-      {renderRollHistory(recentRolls)}
+      <svg style={{height: svgHeight, width: svgWidth}}>
+        {renderRollHistory(recentRolls)}
+      </svg>
     </div>
   )
 }

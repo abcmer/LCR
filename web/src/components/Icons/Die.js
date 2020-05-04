@@ -1,8 +1,10 @@
 import React from 'react';
 export default (props) => {
-  const {index, char} = props;
-  const rectX = index * 25
+  const {rollIndex, char, eventIndex} = props;
+  const rectX = rollIndex * 25
   const textX = rectX + 10
+  const rectY = eventIndex * 30;
+  const textY = rectY + 12
   return(
     <g  
     >
@@ -11,13 +13,13 @@ export default (props) => {
         width='20'
         height='20'
         x={rectX}
-        y={2}  
+        y={rectY}  
         rx="2"    
       />
         <text
           fill='black'
           x={textX}
-          y={14}
+          y={textY}
           font-weight="bold"
           text-anchor="middle"
           alignment-baseline="middle"
